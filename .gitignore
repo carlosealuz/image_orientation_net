@@ -1,0 +1,4 @@
+dataset/test
+dataset/train
+dataset/train_truth.csv
+dataset/imgs_rotated
