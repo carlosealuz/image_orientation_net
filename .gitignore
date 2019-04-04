@@ -2,3 +2,7 @@ dataset/test
 dataset/train
 dataset/train_truth.csv
 dataset/imgs_rotated
+dataset/train.rotfaces.zip
+local_files/
+scripts/.ipynb_checkpoints
+scripts/Untitled.ipynb
