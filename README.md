@@ -1,10 +1,10 @@
 # Image Orientation Network
 Exercise to use a neural network to detect the rotation of images.
 Train dataset are images randomly rotated in one of the following perspectives:
-  Upright;
-  Rotated left;
-  Rotated right;
-  Upside down;
+  * Upright;
+  * Rotated left;
+  * Rotated right;
+  * Upside down;
 
 This dataset can be found here: dataset/train1.zip and **dataset/train2.zip.**
 There is also a csv file with all images and their rotation.
