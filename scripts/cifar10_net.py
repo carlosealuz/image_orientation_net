@@ -1,44 +1,60 @@
-from sklearn.preprocessing import LabelBinarizer
-from sklearn.metrics import classification_report
-from keras.optimizers import SGD
 import cv2
 import numpy as np
 import os
 from glob import glob
+import matplotlib.pyplot as plt
+import csv
+import argparse
+
+from sklearn.preprocessing import LabelBinarizer
+from sklearn.metrics import classification_report
+from keras.optimizers import SGD
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Activation, Flatten
 from keras.layers import Conv2D, MaxPooling2D
 import keras
 from keras.callbacks import ModelCheckpoint
-import matplotlib.pyplot as plt
-import csv
 
 
-images_folder = '../dataset/train/'
-images = glob(os.path.join(images_folder, "*.jpg"))
+ap = argparse.ArgumentParser()
+ap.add_argument("-d", "--dataset", required=True)
+args = vars(ap.parse_args())
+
+dataset_folder = args["dataset"]
+
+train_images_folder = dataset_folder + '/train/'
+images = glob(os.path.join(train_images_folder, "*.jpg"))
 images_names = [os.path.basename(fn) for fn in images]
 
-test_images_folder = '../dataset/test/'
-test_images = glob(os.path.join(test_images_folder, "*.jpg"))
-test_images_names = [os.path.basename(fn) for fn in test_images]
+validation_images_folder = dataset_folder + '/test/'
+validation_images = glob(os.path.join(validation_images_folder, "*.jpg"))
+test_images_names = [os.path.basename(fn) for fn in validation_images]
 
-print("LOADING TRAIN DATASET")
-
-test_imgs = np.asarray([cv2.imread(img) for img in test_images])
+print("{} TRAIN IMAGES".format(len(images)))
+print("{} VALIDATION IMAGES".format(len(validation_images)))
 
 ground_truth = {}
-truth_file = open('../dataset/train_truth.csv', "r")
+truth_file = open(dataset_folder + '/train_truth.csv', "r")
 reader = csv.reader(truth_file)
 for idx,line in enumerate(reader):
     if idx>0:
         ground_truth[line[0]] = line[1]
 
+print("LOADING DATASET")
+
+val_imgs = np.asarray([cv2.imread(img) for img in validation_images])
+
 train_x_img_names = images[:44116]
 train_x = np.asarray([cv2.imread(img) for img in train_x_img_names])
 train_y = [ground_truth[i.split('/')[-1]] for i in train_x_img_names]
+
 test_x_img_names = images[44116:]
 test_x = np.asarray([cv2.imread(img) for img in test_x_img_names])
 test_y = [ground_truth[i.split('/')[-1]] for i in test_x_img_names]
+print("DATASET LOADED")
+print("----------")
+print("TRAIN SHAPE {}. TEST SHAPE {}".format(train_x.shape, test_x.shape))
+print("{} VALIDATION SHAPE".format(val_imgs.shape))
 
 lb = LabelBinarizer()
 
@@ -78,7 +94,7 @@ predictions = model.predict(test_x, batch_size=32)
 
 print(classification_report(test_y.argmax(axis=1), predictions.argmax(axis=1), target_names=labelNames))
 
-pred = model.predict(test_imgs)
+pred = model.predict(val_imgs)
 predicted_argmax = pred.argmax(axis=1)
 prediction_labels = []
 for i in predicted_argmax:
