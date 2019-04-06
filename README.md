@@ -1,4 +1,4 @@
-# image_orientation_net
+# Image Orientation Network
 Exercise to use a neural network to detect the rotation of images.
 Train dataset are images randomly rotated in one of the following perspectives:
   Upright;
