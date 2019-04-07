@@ -14,7 +14,8 @@ The script to train and evaluate the network is in **scripts/cifar10_net.py**. Y
 I used the architecture [here](https://keras.io/examples/cifar10_cnn/) but I removed all Dropout layers to keep it simple.
 Learning rate used was 0.001 and I splitted the training dataset as 80:20 (train, test images).
 
-The code will save a csv file with the predicted orientation for all images in validation dataset. The code will also save the best weights during training (using the validation loss as monitor). 
+The code will save a csv file (**test.preds.csv**) with the predicted orientation for all images in validation dataset. 
+The code will also save the best weights during training (using the validation loss as monitor). 
 
 I used this csv with opencv to load and save all images with the upright orientation. You can check those images in this file **dataset/correct_orientation.zip**
 
